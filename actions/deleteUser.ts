@@ -1,7 +1,11 @@
 "use server";
 
 export async function deleteUser(userId: string) {
-  const response = await fetch('/api/deleteUser', {
+  const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:3000';
+  const fullUrl = `${baseUrl}/api/deleteUser`;
+  console.log('Full URL:', fullUrl);
+
+  const response = await fetch(fullUrl, {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',
@@ -10,6 +14,10 @@ export async function deleteUser(userId: string) {
   });
 
   if (!response.ok) {
-    throw new Error('Failed to delete user');
+    const errorDetails = await response.json();
+    throw new Error(`Failed to delete user: ${errorDetails.error}`);
   }
+
+  const result = await response.json();
+  console.log('Delete user response:', result);
 }

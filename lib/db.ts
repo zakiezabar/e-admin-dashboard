@@ -19,6 +19,13 @@ export async function getUsers(search: string, offset: number) {
   return { users, newOffset };
 }
 
+declare global {
+  var prisma: PrismaClient | undefined
+}
+
+const client = globalThis.prisma || new PrismaClient()
+if (process.env.NODE_ENV != 'development') globalThis.prisma = client
+
 export { prisma as db };
 
 // import { PrismaClient } from "@prisma/client";

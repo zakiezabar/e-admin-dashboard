@@ -13,13 +13,14 @@ import { SelectUser } from '@/lib/types';
 import { deleteUser } from '@/actions/deleteUser';
 import { useRouter } from 'next/navigation';
 
-export function UsersTable({
+export function ListingsTable({
   users,
   offset
 }: {
-  users: SelectUser[] | null | any;
+  users: SelectUser[];
   offset: number | null;
 }) {
+
   const router = useRouter();
 
   console.log('Users Table Props:', { users, offset }); // Debugging log
@@ -30,18 +31,19 @@ export function UsersTable({
 
   return (
     <>
-      <div className="border shadow-sm rounded-lg">
+      <form className="border shadow-sm rounded-lg">
         <Table>
           <TableHeader>
             <TableRow>
               <TableHead className="max-w-[150px]">Name</TableHead>
               <TableHead className="hidden md:table-cell">Email</TableHead>
               <TableHead className="hidden md:table-cell">Action</TableHead>
+              <TableHead></TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {users && users.length > 0 ? (
-              users.map((user:any) => (
+            {users.length > 0 ? (
+              users.map((user) => (
                 <UserRow key={user.id} user={user} />
               ))
             ) : (
@@ -53,17 +55,15 @@ export function UsersTable({
             )}
           </TableBody>
         </Table>
-      </div>
+      </form>
       {offset !== null && (
-        <div className="grid justify-items-end">
-          <Button
-            className="mt-4 w-40"
-            variant="link"
-            onClick={() => onClick()}
-          >
-            Next Page
-          </Button>
-        </div>
+        <Button
+          className="mt-4 w-40"
+          variant="link"
+          onClick={() => onClick()}
+        >
+          Next Page
+        </Button>
       )}
     </>
   );

@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import {
   LuUserSquare,
   LuTent, 
@@ -12,8 +13,11 @@ import {
   LuCrown,
   LuMessagesSquare,
   LuAward,
+  LuServer,
 } from "react-icons/lu";
 import { logout } from "@/actions/logout";
+import { signOut } from "next-auth/react";
+import { UserButton } from "@/components/auth/user-button";
 
 // export const SideBar = () => {
 //   return (
@@ -31,8 +35,10 @@ type Props = {
 
 export const SideBar = ({ className }: Props) => {
 
-  const onClick = () => {
-    logout();
+  const router = useRouter();
+
+  const onClick =  async () => {
+    await signOut();
   }
 
   return (
@@ -82,10 +88,17 @@ export const SideBar = ({ className }: Props) => {
           iconSrc={LuAward}
           iconSize={24}
         />
+        <SidebarItem
+          label="Server"
+          href="/server"
+          iconSrc={LuServer}
+          iconSize={24}
+        />
         </div>
-        <div className="b-0 mb-8 w-full">
-          <Button variant="ghost" onClick={onClick} className="w-full">Sign Out</Button>
-        </div>
+        {/* <div className="b-0 mb-8 w-full">
+          <Button variant="ghost" onClick={()=>onClick()} className="w-full">Sign Out</Button>
+        </div> */}
+        <UserButton />
     </div>
   )
 };
